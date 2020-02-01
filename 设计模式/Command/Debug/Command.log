@@ -1,0 +1,6 @@
+﻿  main.cpp
+  Waiter.cpp
+C:\Users\70932\Desktop\Command\Waiter.h(26,20): warning C4018:  “<”: 有符号/无符号不匹配
+  正在生成代码...
+C:\Users\70932\Desktop\Command\Waiter.h(26,20): warning C4018:  “<”: 有符号/无符号不匹配
+  Command.vcxproj -> C:\Users\70932\Desktop\Command\Debug\Command.exe
