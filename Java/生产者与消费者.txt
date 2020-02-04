@@ -1,0 +1,74 @@
+class Goods {
+    private String goodsName;
+    private int count;
+    public synchronized void set(String goodsName) throws InterruptedException{
+        if(this.count > 0){
+            System.out.println("还有库存，等待消费者");
+            wait();
+        }
+        this.goodsName = goodsName;
+        this.count = count+1;
+        System.out.println("生产" + toString());
+        notify();
+    }
+    public synchronized void get() throws InterruptedException{
+        if(this.count == 0){
+            System.out.println("商品卖完了");
+            wait();
+        }
+        this.count = this.count - 1;
+        System.out.println("消费" + toString());
+        notify();
+    }
+
+    @Override
+    public String toString() {
+        return "Goods[goodsName=" + goodsName + ",count=" + count + "]";
+    }
+}
+
+class Producer implements Runnable {
+    private Goods goods;
+    public Producer(Goods goods){
+        super();
+        this.goods = goods;
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.goods.set("奔驰一辆");
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+}
+
+class Consumer implements Runnable{
+    private Goods goods;
+    public Consumer(Goods goods){
+        super();
+        this.goods = goods;
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.goods.get();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Hello {
+    public static void main(String[] args) throws InterruptedException{
+        Goods goods = new Goods();
+        Thread produceThread = new Thread(new Producer(goods));
+        Thread consumerThread = new Thread(new Consumer(goods));
+
+        consumerThread.start();
+        Thread.sleep(1000);
+        produceThread.start();
+    }
+}
